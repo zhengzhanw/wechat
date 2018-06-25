@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>WechatFrame.qml</file>
+        <file>Wechat.qml</file>
     </qresource>
 </RCC>

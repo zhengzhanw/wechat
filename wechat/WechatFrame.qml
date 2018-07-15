@@ -17,7 +17,10 @@ Item {
         url: "https://wx2.qq.com/?lang=zh_CN"
 
         onNewViewRequested: {
-            var newWindow = windowComponent.createObject(windowParent)
+            console.log("new view request")
+//            request.openIn(webView)
+//            Qt.openUrlExternally(request.requestedUrl)
+            var newWindow = windowComponent.createObject(mainWindow)
             request.openIn(newWindow.webView)
 
             if (windowParent.isInit) {
@@ -40,7 +43,7 @@ Item {
                    })
 
                    webView.runJavaScript("document.getElementsByClassName('web_wechat_reddot_middle').length > 0",function(result){
-//                        if (result){
+                        if (result){
                             if (needShowWindowPanel.visible == false){
                                 needShowWindowPanel.visible = true
                                 needShowWindowPanel.imgNum = (needShowWindowPanel.imgNum + 1)%18
@@ -50,10 +53,10 @@ Item {
                                 needShowWindowPanel.visible = false
                                 needShowWindowPanel.active = false
                             }
-//                        }else{
-//                            needShowWindowPanel.visible = false
-//                            needShowWindowPanel.active = false
-//                        }
+                        }else{
+                            needShowWindowPanel.visible = false
+                            needShowWindowPanel.active = false
+                        }
                    })
                }
          }

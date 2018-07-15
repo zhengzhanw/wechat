@@ -3,5 +3,27 @@
         <file>main.qml</file>
         <file>WechatFrame.qml</file>
         <file>Wechat.qml</file>
+        <file>ShowWindow.qml</file>
+        <file>img/message1.jpg</file>
+        <file>img/myico.ico</file>
+        <file>img/wechat.jpg</file>
+        <file>img/message0.jpg</file>
+        <file>img/message10.jpg</file>
+        <file>img/message11.jpg</file>
+        <file>img/message12.jpg</file>
+        <file>img/message13.jpg</file>
+        <file>img/message14.jpg</file>
+        <file>img/message15.jpg</file>
+        <file>img/message16.jpg</file>
+        <file>img/message17.jpg</file>
+        <file>img/message2.jpg</file>
+        <file>img/message3.jpg</file>
+        <file>img/message4.jpg</file>
+        <file>img/message5.jpg</file>
+        <file>img/message6.jpg</file>
+        <file>img/message7.jpg</file>
+        <file>img/message8.jpg</file>
+        <file>img/message9.jpg</file>
     </qresource>
+    <qresource prefix="/img"/>
 </RCC>

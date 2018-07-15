@@ -1,4 +1,4 @@
-import QtQuick 2.9
+﻿import QtQuick 2.9
 import QtQuick.Window 2.2
 
 Window {
@@ -7,12 +7,19 @@ Window {
     height: 732
     title: qsTr("wechat")
 
+    property int sWidth: Screen.desktopAvailableWidth
+    property int sHeight: Screen.desktopAvailableHeight
+
     Rectangle {
         width: parent.width
         height: parent.height
-        Wechat {
-//            width: parent.width
-//            height: parent.height
+        WechatFrame {
+
         }
+    }
+    Component.onCompleted: {
+
+        console.log(sWidth)
+        console.log(sHeight)
     }
 }

@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Window 2.2
-import QtWebEngine 1.3
+import QtWebEngine 1.4
 import QtQuick.Controls 2.4
 
 Item {
@@ -23,11 +23,18 @@ Item {
             var newWindow = windowComponent.createObject(mainWindow)
             request.openIn(newWindow.webView)
 
-            if (windowParent.isInit) {
+
+        }
+
+        onLoadingChanged:{
+            console.log(loadRequest.url)
+            if(loadRequest.status == 0 && loadRequest.url != 'https://wx2.qq.com/?lang=zh_CN'){
+                var newWindow = windowComponent.createObject(mainWindow)
                 profile.downloadRequested.connect(newWindow.onDownloadRequested)
                 profile.downloadFinished.connect(newWindow.onDownloadFinished)
-                windowParent.isInit = false;
             }
+
+
         }
 
         Timer {
@@ -38,9 +45,9 @@ Item {
                //Timer还提供了一些函数，如restart()、start()和stop()等
                interval: 1000; running:true; repeat:true
                onTriggered: {
-                   webView.findText("div", WebEngineView.FindCaseSensitively, function(success){
-                       console.log('web view ' + success)
-                   })
+//                   webView.findText("div", WebEngineView.FindCaseSensitively, function(success){
+//                       console.log('web view ' + success)
+//                   })
 
                    webView.runJavaScript("document.getElementsByClassName('web_wechat_reddot_middle').length > 0",function(result){
                         if (result){
@@ -100,34 +107,37 @@ Item {
         // Because it was created with a parent, it won't be garbage-collected.
         id: wnd
         onClosing: destroy();
+
         visible: true
 
-        width: 800
-        height: 600
+        width: 300
+        height: 65
+
+        flags: Qt.FramelessWindowHint
 
         property var downloads;
         property QtObject defaultProfile: WebEngineProfile {
             storageName: "Default"
         }
 
-        property WebEngineView webView: webView_
-        WebEngineView {
-            id: webView_
-            anchors.fill: parent
+//        property WebEngineView webView: webView_
+//        WebEngineView {
+//            id: webView_
+//            anchors.fill: parent
 
-            // Handle the signal. Dynamically create the window and
-            // use its WebEngineView as the destination of our request.
-            onNewViewRequested: {
-                var newWindow = windowComponent.createObject(windowParent)
-                request.openIn(newWindow.webView)
+//            // Handle the signal. Dynamically create the window and
+//            // use its WebEngineView as the destination of our request.
+//            onNewViewRequested: {
+//                var newWindow = windowComponent.createObject(mainWindow)
+//                request.openIn(newWindow.webView)
 
-                if (windowParent.isInit) {
-                    profile.downloadRequested.connect(newWindow.onDownloadRequested)
-                    profile.downloadFinished.connect(newWindow.onDownloadFinished)
-                    windowParent.isInit = false;
-                }
-            }
-        }
+//                if (mainWindow.isInit) {
+//                    profile.downloadRequested.connect(newWindow.onDownloadRequested)
+//                    profile.downloadFinished.connect(newWindow.onDownloadFinished)
+//                    mainWindow.isInit = false;
+//                }
+//            }
+//        }
 
         Rectangle {
             id: downloadView
@@ -168,7 +178,7 @@ Item {
             downloadView.progress_val = download.receivedBytes / download.totalBytes
             var arr = download.path.split('/');
             var name = arr[arr.length-1];
-            download.path = "E:/Qt_Test/"+name;
+            download.path = "/home/data/Qt_file/"+name;
             downloads = download;
             console.log("download->path=", download.path);
             reloadTimer.start();
@@ -179,8 +189,10 @@ Item {
         }
         function onDownloadFinished(download){
             console.log("onDownloadFinished")
-            reloadTimer.stop();
-            reloadTimer.running = false;
+            if(reloadTimer.running){
+                reloadTimer.stop();
+                reloadTimer.running = false;
+            }
             if (download.state === 2)
             {
                 downloadView.progress_val = 1.0;

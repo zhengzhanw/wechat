@@ -1,5 +1,6 @@
 QT += quick
 QT += webengine
+QT += webenginewidgets
 
 CONFIG += c++11
 

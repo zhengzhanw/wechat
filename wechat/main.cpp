@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtWebEngine/QtWebEngine>
+#include <QWebEngineSettings>
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +10,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     QtWebEngine::initialize();
+    QWebEngineSettings* settings = QWebEngineSettings::globalSettings();
+    settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

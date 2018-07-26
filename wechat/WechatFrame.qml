@@ -15,6 +15,7 @@ Item {
         width: 1000
         height: 732
         url: "https://wx2.qq.com/?lang=zh_CN"
+        settings.pluginsEnabled:true
 
         onNewViewRequested: {
             console.log("new view request")

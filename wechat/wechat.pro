@@ -1,8 +1,16 @@
 QT += quick
 QT += webengine
 QT += webenginewidgets
+QT += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = wechat
+TEMPLATE = app
 
 CONFIG += c++11
+
+include(qxtglobalshortcut5/qxt.pri)
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -18,7 +26,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 RC_ICONS = myico.ico
 
 unix:{
-DISTFILES   += appico.rc
+DISTFILES   += appico.rc \
+                myico.ico
 }
 
 win32:{
@@ -30,9 +39,37 @@ INCLUDEPATH += ../ \
 
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        screenshottool.cpp \
+        canvas.cpp \
+        KeyString.cpp \
+        hotkeybar.cpp \
+        rectpaint.cpp \
+        linepaint.cpp \
+        textpaint.cpp \
 
-RESOURCES += qml.qrc
+HEADERS += \
+    screenshottool.h \
+    canvas.h \
+    KeyString.h \
+    hotkeybar.h \
+    operateSet.h \
+    rectpaint.h \
+    linepaint.h \
+    textpaint.h
+
+FORMS += \
+        screenshottool.ui
+
+RESOURCES += \
+    screenshottool.qrc \
+    qml.qrc
+
+
+RC_ICONS = ss.ico
+
+TRANSLATIONS += zh_cn.ts \
+                en.ts
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -45,5 +82,3 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    myico.ico

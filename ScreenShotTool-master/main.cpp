@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
 
     a.setQuitOnLastWindowClosed(false);         //防止窗体全部掩藏后意外退出
     ScreenShotTool w;
-//    w.hide();
+
+    w.hide();
 
     return a.exec();
 }

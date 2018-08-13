@@ -4,7 +4,6 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Window 2.2
 import QtWebEngine 1.4
-import QtQuick.Controls 2.4
 
 Item {
     width: parent.width
@@ -18,13 +17,23 @@ Item {
         settings.pluginsEnabled:true
 
         onNewViewRequested: {
+            console.log(request.requestedUrl.toString())
             console.log("new view request")
 //            request.openIn(webView)
 //            Qt.openUrlExternally(request.requestedUrl)
             var newWindow = windowComponent.createObject(mainWindow)
-            request.openIn(newWindow.webView)
+            if (request.requestedUrl.toString().search("file.wx2.qq.com")){
+                console.log("download")
+                newWindow.downloadFile = true
+                request.openIn(newWindow.webView)
 
-
+            }
+            else{
+                console.log("open view")
+                newWindow.width = 800
+                newWindow.height = 600
+                request.openIn(newWindow.webView)
+            }
         }
 
         onLoadingChanged:{
@@ -114,6 +123,10 @@ Item {
         width: 300
         height: 65
 
+        property int _width: width
+        property int  _height: height
+        property bool downloadFile: false
+
         flags: Qt.FramelessWindowHint
 
         property var downloads;
@@ -121,13 +134,14 @@ Item {
             storageName: "Default"
         }
 
-//        property WebEngineView webView: webView_
-//        WebEngineView {
-//            id: webView_
-//            anchors.fill: parent
+        property WebEngineView webView: webView_
+        WebEngineView {
+            id: webView_
+            anchors.fill: parent
 
-//            // Handle the signal. Dynamically create the window and
-//            // use its WebEngineView as the destination of our request.
+
+            // Handle the signal. Dynamically create the window and
+            // use its WebEngineView as the destination of our request.
 //            onNewViewRequested: {
 //                var newWindow = windowComponent.createObject(mainWindow)
 //                request.openIn(newWindow.webView)
@@ -138,7 +152,20 @@ Item {
 //                    mainWindow.isInit = false;
 //                }
 //            }
-//        }
+
+            onLoadingChanged:{
+                console.log(loadRequest.url)
+                console.log(wnd.downloadFile)
+                if(loadRequest.status == 0 && wnd.downloadFile === true){
+                    var newWindow = windowComponent.createObject(mainWindow)
+                    profile.downloadRequested.connect(newWindow.onDownloadRequested)
+                    profile.downloadFinished.connect(newWindow.onDownloadFinished)
+                    profile.downloadFinished.connect(wnd.close)
+//                    wnd.close()
+                }
+            }
+
+        }
 
         Rectangle {
             id: downloadView
@@ -174,7 +201,9 @@ Item {
                 downloadView.progress_val = downloads.receivedBytes / downloads.totalBytes
             }
         }
+
         function onDownloadRequested(download) {
+            console.log("onDownloadRequested")
             downloadView.visible = true
             downloadView.progress_val = download.receivedBytes / download.totalBytes
             var arr = download.path.split('/');

@@ -11,6 +11,10 @@ Window {
     property int sWidth: Screen.desktopAvailableWidth
     property int sHeight: Screen.desktopAvailableHeight
 
+    onClosing: {
+        Qt.quit()
+    }
+
     Rectangle {
         width: parent.width
         height: parent.height

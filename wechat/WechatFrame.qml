@@ -22,9 +22,10 @@ Item {
 //            request.openIn(webView)
 //            Qt.openUrlExternally(request.requestedUrl)
             var newWindow = windowComponent.createObject(mainWindow)
-            if (request.requestedUrl.toString().search("file.wx2.qq.com")){
+            if (request.requestedUrl.toString().search("file.wx2.qq.com") !== -1){
                 console.log("download")
                 newWindow.downloadFile = true
+                newWindow.visible = false
                 request.openIn(newWindow.webView)
 
             }
@@ -32,6 +33,7 @@ Item {
                 console.log("open view")
                 newWindow.width = 800
                 newWindow.height = 600
+                newWindow.flags = Qt.MSWindowsFixedSizeDialogHint
                 request.openIn(newWindow.webView)
             }
         }
